@@ -14,17 +14,17 @@
 ;;; Code:
 ;;;
 
-(defcustom toggle-theme--light-theme
+(defcustom toggle-theme-light-theme
   "The name of the light theme."
-  'immaterial-light)
+  nil)
 
-(defcustom toggle-theme--dark-theme
+(defcustom toggle-theme-dark-theme
   "The name of the dark theme."
-  'immaterial-dark)
+  nil)
 
 (defconst toggle-theme--get-theme-state-file
-  "Location of theme state file"
-  (expand-file-name "theme-state" user-emacs-directory))
+  (expand-file-name "theme-state" user-emacs-directory)
+  "Location of theme state file")
 
 (defun toggle-theme--write-theme-state-file (mode)
   "Write theme state to file. MODE is either 'light or 'dark."
@@ -33,22 +33,22 @@
              (dark "dark\n")
              (light "light\n")
              (otherwise (error "invalid argument"))))
-    (write-file my/get-theme-state-file)))
+    (write-file toggle-theme--get-theme-state-file)))
 
 (defun toggle-theme--read-most-recent-theme ()
   "Reads the contents of the most recent theme file"
   (condition-case err
     (with-temp-buffer
-      (insert-file-contents my/get-theme-state-file)
+      (insert-file-contents toggle-theme--get-theme-state-file)
       (string-trim (buffer-string)))
   (file-missing
-     (my/write-theme-state-file 'dark)
+     (toggle-theme--write-theme-state-file 'dark)
      "dark")))
 
 (defun toggle-theme--get-most-recent-theme ()
   "Returns 'light or 'dark depending on most recent theme."
   (let
-      ((mode (my/read-most-recent-theme)))
+      ((mode (toggle-theme--read-most-recent-theme)))
     (cond
      ((string= mode "light") 'light)
      ((string= mode "dark") 'dark)
@@ -56,22 +56,22 @@
 
 (defun toggle-theme-restore-theme ()
   "Loads the previously used theme."
-  (case (my/get-most-recent-theme)
+  (case (toggle-theme--get-most-recent-theme)
     ('light
-     (load-theme 'immaterial-light t))
+     (load-theme toggle-theme-light-theme t))
     ('dark
-     (load-theme 'immaterial-dark t))))
+     (load-theme toggle-theme-dark-theme t))))
 
 (defun toggle-theme ()
   "Toggles between light or dark theme."
   (interactive)
-  (case (my/get-most-recent-theme)
+  (case (toggle-theme--get-most-recent-theme)
     ('light
-     (my/write-theme-state-file 'dark)
-     (load-theme 'immaterial-dark t))
+     (toggle-theme--write-theme-state-file 'dark)
+     (load-theme toggle-theme-dark-theme t))
     ('dark
-     (my/write-theme-state-file 'light)
-     (load-theme 'immaterial-light t))))
+     (toggle-theme--write-theme-state-file 'light)
+     (load-theme toggle-theme-light-theme t))))
 
 (provide 'toggle-theme)
 
