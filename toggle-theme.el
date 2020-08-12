@@ -15,12 +15,12 @@
 ;;;
 
 (defcustom toggle-theme-light-theme
-  "The name of the light theme."
-  nil)
+  nil
+  "The name of the light theme.")
 
 (defcustom toggle-theme-dark-theme
-  "The name of the dark theme."
-  nil)
+  nil
+  "The name of the dark theme.")
 
 (defconst toggle-theme--get-theme-state-file
   (expand-file-name "theme-state" user-emacs-directory)
