@@ -1,4 +1,4 @@
-;;; toggle-theme.el --- Toggle themes in emacs -*- lexical-binding: t -*-
+;;; toggle-theme.el --- Toggle themes -*- lexical-binding: t -*-
 ;;;
 ;;; Author:
 ;;; Truls Asheim <truls@asheim.dk>
